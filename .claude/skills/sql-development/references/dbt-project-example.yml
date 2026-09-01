@@ -1,0 +1,12 @@
+# Materialization defaults (nested by area, then layer)
+models:
+  my_project:
+    claims_analysis:              # one block per area; add more areas alongside
+      staging:
+        +materialized: view
+      intermediate:               # only when an intermediate/ folder exists
+        +materialized: ephemeral
+      marts:
+        +materialized: table
+      audits:                     # only when an audits/ folder exists
+        +materialized: view

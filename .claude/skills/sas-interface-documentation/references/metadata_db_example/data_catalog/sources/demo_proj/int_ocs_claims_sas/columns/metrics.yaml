@@ -1,0 +1,29 @@
+# docs/activities/sas_conversion/ocs_claims/data_catalog/sources/demo_proj/int_ocs_claims_sas/columns/metrics.yaml
+# Second shard of the columns/ folder form (see columns/identity.yaml for
+# the folder-form contract). This shard holds the rolled-up measures.
+# column_id = demo_proj.int_ocs_claims_sas.<table_name>.<column_name>.
+# Field legend: authoring_conventions.md.
+
+- table_name: ocs_claims_summary
+  column_name: clm_cnt
+  data_type: num
+  is_nullable: false
+  description: Number of final-action claims for the beneficiary.
+  notes: null
+  update_reason: null
+
+- table_name: ocs_claims_summary
+  column_name: first_from_dt
+  data_type: num
+  is_nullable: true
+  description: Earliest claim from date for the beneficiary (SAS date, DATE9. format).
+  notes: Null where every claim carried a missing from date.
+  update_reason: null
+
+- table_name: ocs_claims_summary
+  column_name: tot_pmt_amt
+  data_type: num
+  is_nullable: false
+  description: Total Medicare payment across the beneficiary's claims.
+  notes: null
+  update_reason: null

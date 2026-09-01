@@ -1,0 +1,20 @@
+# Local vs target configuration. Lives in ~/.dbt/, not the repo — so credentials
+# can sit here directly without being committed to version control.
+# The local DuckDB target needs no credentials and no server; it is where
+# `dbt parse` and the unit tests run.
+my_project:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: local.duckdb
+      schema: main
+    snowflake:
+      type: snowflake
+      account: your_account
+      user: dbt_user
+      password: your_password
+      database: my_database
+      warehouse: my_warehouse
+      schema: analytics
+      role: dbt_role

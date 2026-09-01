@@ -1,0 +1,31 @@
+# End-to-end validation config for sas-data-resolution.
+# Resolves the committed extraction example against metadata_db so the skill can be
+# smoke-tested end to end. Run from the repo root:
+#
+#   uv run .claude/skills/sas-data-resolution/scripts/resolve_schema.py \
+#       --config .claude/skills/sas-data-resolution/scripts/config/resolve_schema.toml
+#
+# Output: output/ocs_claims/input_schema_resolution.jsonl (the process_name comes from the
+# input inventory's meta record, not from this config).
+
+# Required
+input_schema = ".claude/skills/sas-variable-extraction/references/sas_variable_extraction_example_input_schema.jsonl"
+overwrite    = true
+
+# Optional. Defaults to docs/activities/sas_conversion; overridden here so the
+# smoke test writes to scratch rather than into a real conversion folder.
+output_dir   = "output"
+
+# MCP endpoint (defaults shown). The server is a live dependency: MCP_MAX_ROWS caps
+# the rows a query may return and MCP_STATEMENT_TIMEOUT_S caps how long it may run.
+# A truncated result raises rather than being written. The columns and mappings fetches
+# are bounded by the input inventory rather than by the scope's width, so their truncation
+# means the run really needs those rows; another query truncating means that catalog
+# region outgrew the cap. Raise both limits server-side together.
+mcp_url        = "http://localhost:8002/mcp"  # default: http://localhost:8002/mcp
+mcp_timeout_s  = 60                           # default: 60
+mcp_database   = "metadata_db"                # default: metadata_db
+
+# The server requires a bearer token. It is read from this environment variable --
+# the same one .mcp.json uses -- so no secret is committed here.
+mcp_token_env  = "MCP_METADATA_DB_TOKEN"      # default: MCP_METADATA_DB_TOKEN

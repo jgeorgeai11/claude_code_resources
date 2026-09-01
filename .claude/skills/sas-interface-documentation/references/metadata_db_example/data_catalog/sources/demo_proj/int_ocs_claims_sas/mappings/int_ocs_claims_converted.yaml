@@ -1,0 +1,50 @@
+# docs/activities/sas_conversion/ocs_claims/data_catalog/sources/demo_proj/int_ocs_claims_sas/mappings/int_ocs_claims_converted.yaml
+# Loads into `column_mappings` rows. Mappings live in the SOURCE schema's
+# mappings/ folder and point at the target: every row's source_column_id
+# must carry this folder's demo_proj.int_ocs_claims_sas prefix. The filename stem
+# (`int_ocs_claims_converted`) is a grouping label -- typically the target
+# schema; the target is identified by each expression's own column references.
+# Field legend: authoring_conventions.md.
+#
+# Every variable in output_schema.jsonl becomes a documented column with a
+# mapping. A column with no entry here fails a future consumer's
+# resolution as a missing_variable gap.
+
+# A NO-EQUIVALENT MAPPING: the converted output drops this column, so it
+# gets an entry with a null target_expression naming the substitute in
+# notes (required for a drop) — not no entry at all.
+- source_column_id: demo_proj.int_ocs_claims_sas.ocs_claims_summary.person_key
+  mapping_name: default
+  target_expression: null
+  use_when: null
+  notes: >-
+    No equivalent in the converted output. EDW identifies the beneficiary by
+    mbr_sk, which corresponds closely but not always to the Warehouse Person Key,
+    so the summary is keyed on demo_proj.int_ocs_claims_converted.bene_summary.mbr_sk
+    instead (see the beneficiary_external_ids concept).
+  validated: true
+  update_reason: null
+
+- source_column_id: demo_proj.int_ocs_claims_sas.ocs_claims_summary.clm_cnt
+  mapping_name: default
+  target_expression: demo_proj.int_ocs_claims_converted.bene_summary.clm_cnt
+  use_when: null
+  notes: Same name on both sides — the entry still exists; absence, not sameness, is what breaks the next conversion.
+  validated: true
+  update_reason: null
+
+- source_column_id: demo_proj.int_ocs_claims_sas.ocs_claims_summary.first_from_dt
+  mapping_name: default
+  target_expression: demo_proj.int_ocs_claims_converted.bene_summary.first_from_dt
+  use_when: null
+  notes: SAS date to SQL date; the value is unchanged.
+  validated: true
+  update_reason: null
+
+- source_column_id: demo_proj.int_ocs_claims_sas.ocs_claims_summary.tot_pmt_amt
+  mapping_name: default
+  target_expression: demo_proj.int_ocs_claims_converted.bene_summary.tot_pmt_amt
+  use_when: null
+  notes: Same name on both sides.
+  validated: true
+  update_reason: null

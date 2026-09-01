@@ -1,0 +1,14 @@
+# Code owners for this repository.
+#
+# Every pull request targeting a path below requires an approving review from
+# one of the listed owners before it can be merged. This is enforced by the
+# "main-approval-gate" ruleset, which sets require_code_owner_review on main.
+#
+# Owners must have write access to the repository, otherwise they are silently
+# ignored. Lines with invalid syntax are skipped without warning, so verify the
+# rule is active on the next pull request after editing this file.
+#
+# Keep at least two owners: GitHub does not allow approving your own pull
+# request, so a single owner would be unable to merge their own work.
+
+*       @jgeorgeai11

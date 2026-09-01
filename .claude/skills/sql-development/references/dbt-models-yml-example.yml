@@ -1,0 +1,45 @@
+models:
+  - name: int_claims_analysis__categorized
+    description: "Medical claims with a derived cost_tier.
+                  Built from stg_claims_analysis__medical. Level = claim_id."
+    columns:
+      - name: claim_id
+        description: "Claim identifier. Source: stg_claims_analysis__medical."
+        tests:
+          - not_null
+          - unique
+      - name: bene_id
+        description: "Beneficiary identifier. Source: stg_claims_analysis__medical."
+        tests:
+          - not_null
+      - name: clm_from_dt
+        description: "Claim start date. Source: stg_claims_analysis__medical."
+      - name: clm_pmt_amt
+        description: "Claim payment amount. Source: stg_claims_analysis__medical."
+      - name: cost_tier
+        description: "HIGH / MEDIUM / LOW / ZERO, derived from clm_pmt_amt."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['HIGH', 'MEDIUM', 'LOW', 'ZERO']
+
+unit_tests:
+  - name: test_cost_tier_thresholds
+    description: "Checks the cost_tier CASE boundaries."
+    model: int_claims_analysis__categorized
+    given:
+      # Only supply the input column that drives cost_tier.
+      - input: ref('stg_claims_analysis__medical')
+        rows:
+          - {claim_id: 1, clm_pmt_amt: 10000}
+          - {claim_id: 2, clm_pmt_amt: 1000}
+          - {claim_id: 3, clm_pmt_amt: 1}
+          - {claim_id: 4, clm_pmt_amt: 0}
+    expect:
+      # Assert only the derived column (claim_id is the row key).
+      rows:
+        - {claim_id: 1, cost_tier: 'HIGH'}
+        - {claim_id: 2, cost_tier: 'MEDIUM'}
+        - {claim_id: 3, cost_tier: 'LOW'}
+        - {claim_id: 4, cost_tier: 'ZERO'}

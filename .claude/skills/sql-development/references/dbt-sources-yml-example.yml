@@ -1,0 +1,32 @@
+sources:
+  - name: claims_analysis
+    database: my_database
+    schema: raw_data
+    description: "Raw claims tables from the source system"
+    tables:
+      - name: claim_header
+        description: "Raw claim header records"
+        columns:
+          - name: claim_id
+            description: "Source system claim identifier"
+            tests:
+              - not_null
+              - unique
+          - name: bene_id
+            description: "Beneficiary identifier"
+            tests:
+              - not_null
+      - name: claim_line
+        description: "Raw claim line detail records"
+        columns:
+          - name: claim_id
+            description: "Foreign key to claim_header"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('claims_analysis', 'claim_header')
+                  field: claim_id
+          - name: line_num
+            description: "Line number within the claim"
+            tests:
+              - not_null

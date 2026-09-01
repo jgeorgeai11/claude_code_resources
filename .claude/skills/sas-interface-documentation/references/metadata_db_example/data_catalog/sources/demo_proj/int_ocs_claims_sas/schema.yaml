@@ -1,0 +1,9 @@
+# docs/activities/sas_conversion/ocs_claims/data_catalog/sources/demo_proj/int_ocs_claims_sas/schema.yaml
+# Loads into a `schemas` row: schema_id='demo_proj.int_ocs_claims_sas',
+# schema_name='int_ocs_claims_sas' (both from the path). A conversion mints
+# this schema — the data source (demo_proj, the project team) exists, the
+# interface schema does not until this file does. Field legend: authoring_conventions.md.
+
+description: The ocs_claims SAS process's kept outputs, as the SAS process writes them — the interface the process presents to its consumers.
+notes: null
+update_reason: null

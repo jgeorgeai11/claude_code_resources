@@ -1,0 +1,8 @@
+# docs/activities/sas_conversion/ocs_claims/data_catalog/sources/demo_proj/int_ocs_claims_converted/schema.yaml
+# Loads into a `schemas` row: schema_id='demo_proj.int_ocs_claims_converted',
+# schema_name='int_ocs_claims_converted' (both from the path). The
+# conversion mints this schema too, beside the _sas one. Field legend: authoring_conventions.md.
+
+description: The converted ocs_claims process's outputs, as the converted code writes them in the EDW.
+notes: null
+update_reason: null

@@ -1,0 +1,75 @@
+# Configuration for extract_sas_dataset_schemas.py
+#
+# Usage: uv run .claude/skills/sas-variable-extraction/scripts/extract_sas_dataset_schemas.py --config <this-file>
+#
+# Output: {output_dir}/{process_name}/input_schema.jsonl (default output_dir: docs/activities/sas_conversion)
+# Records are meta / origin_sas_dataset / origin_sas_variable (see the example
+# .jsonl in this folder).
+# With an [outputs] section, also {output_dir}/{process_name}/output_schema.jsonl
+# (example also in this folder: sas_variable_extraction_example_output_schema.jsonl).
+#
+# This example uses the demo catalog in metadata_db: a SAS process reading OCS
+# professional claims in the warehouse system, converted to run against the EDW
+# Medicare view in the edw system.
+#
+# Note the input datasets: SRCLIB.OCS_CLAIMS is a derived analysis subset built from
+# the cataloged clm and clm_line tables — it is not itself a catalog table, and it
+# carries columns from both parents. That is the normal case for derived subsets.
+
+[settings]
+process_name = "ocs_claims"
+# overwrite governs every published file this run would destroy: either inventory it
+# replaces, and a stale output_schema.jsonl it would remove. false with any of them
+# present stops the run before publishing anything.
+overwrite    = true
+# output_dir = "docs/activities/sas_conversion"  # optional, this is the default
+
+# Every section's key set is closed: an unknown key is rejected at parse.
+
+# Catalog coordinates. Catalog ids are system-free, so system and data scope are
+# separate. The systems are process-wide only and belong here in [settings]; the
+# data scopes can be set here as process-wide defaults and overridden per dataset.
+# The script passes them straight through and never reads metadata_db.
+
+# Systems — `systems` labels, PROCESS-WIDE ONLY (a per-dataset system is rejected
+# at config parse: one process is one compute job in one system pair). A system is
+# where the physical tables live AND where compute happens. dest_system is where
+# the converted code runs and reads; its presence marks the process for
+# conversion. It may equal origin_system.
+origin_system = "warehouse"
+dest_system   = "edw"
+
+# Data — LISTS of ltree prefixes, at whatever precision you have:
+#   ["ocs"]                                             data source (the minimum)
+#   ["ocs.non_institutional"]                           schema
+#   ["ocs.non_institutional.clm_line", "...clm_sgmt"]   tables (most specific)
+# dest_data_scope present = the data source changes, so the resolution step consults
+# column_mappings. Omit it when only the system or the language is changing.
+origin_data_scope = ["ocs.non_institutional"]
+dest_data_scope   = ["edwc_prd.claims_vw_prd"]
+
+[datasets]
+# "LIBNAME.DATASET" = { path = "...", <optional origin_data_scope / dest_data_scope overrides> }
+# A dataset SPLIT across sibling files of identical shape takes a `*` in both its
+# LIBNAME.DATASET key and its path, and must match that split's files and nothing else.
+# `*` is an ordinary filename glob, so the numbering in CLM_00..CLM_99 is only
+# convention and clm_east/clm_west match too, while `?` and `[...]` are NOT recognized
+# and match nothing. The identical shape is what matters, since one member is read to
+# inventory them all. Keep the `*` out of the directory; path must be a non-empty string.
+# A dataset-level origin_data_scope / dest_data_scope REPLACES the [settings] default outright;
+# the two are never merged, so a dataset entry can narrow the process-wide scope.
+# Only the data scopes may be overridden per dataset; the systems may not.
+"SRCLIB.OCS_CLAIMS_*" = { path = "data/sas/ocs_claims_*.sas7bdat" }
+"SRCLIB.OCS_LINES_*"  = { path = "data/sas/ocs_lines_*.sas7bdat", origin_data_scope = ["ocs.non_institutional.clm_line"] }
+
+[outputs]
+# The process's KEPT outputs — permanent datasets other processes consume or that
+# are delivered; never WORK or internal intermediates, and never
+# a dataset already in [datasets]. Same entry shape as [datasets] but NO coordinate
+# keys: outputs are inventoried, not resolved — where the interface tables land in
+# the catalog is the conversion plan's decision, not an extraction fact. Written
+# to output_schema.jsonl, the ground truth sas-interface-documentation authors the
+# interface tables from. Omit this whole section when the process has no kept outputs;
+# an unreadable output dataset fails the run rather than being skipped. A split kept
+# output takes the same `*` in its key and path as a split input does.
+"PERM.OCS_CLAIMS_SUMMARY" = { path = "data/sas/perm/ocs_claims_summary.sas7bdat" }

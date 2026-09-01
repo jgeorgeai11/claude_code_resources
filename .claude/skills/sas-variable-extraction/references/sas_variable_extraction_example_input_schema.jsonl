@@ -1,0 +1,9 @@
+{"record_type": "meta", "process_name": "ocs_claims", "origin_system": "warehouse", "dest_system": "edw", "origin_data_scope": ["ocs.non_institutional"], "dest_data_scope": ["edwc_prd.claims_vw_prd"]}
+{"record_type": "origin_sas_dataset", "dataset": "SRCLIB.OCS_CLAIMS_*", "filepath": "data/sas/ocs_claims_*.sas7bdat"}
+{"record_type": "origin_sas_dataset", "dataset": "SRCLIB.OCS_LINES_*", "filepath": "data/sas/ocs_lines_*.sas7bdat", "origin_data_scope": ["ocs.non_institutional.clm_line"]}
+{"record_type": "origin_sas_variable", "dataset": "SRCLIB.OCS_CLAIMS_*", "variable": "clm_type", "type": "char", "format": "$CHAR2.", "length": 2, "label": "Claim Type Code"}
+{"record_type": "origin_sas_variable", "dataset": "SRCLIB.OCS_CLAIMS_*", "variable": "fa_drop", "type": "num", "format": "BEST12.", "length": 8, "label": "Final Action Drop Flag"}
+{"record_type": "origin_sas_variable", "dataset": "SRCLIB.OCS_CLAIMS_*", "variable": "person_key", "type": "num", "format": "COMMA23.", "length": 8, "label": "Beneficiary Person Key"}
+{"record_type": "origin_sas_variable", "dataset": "SRCLIB.OCS_CLAIMS_*", "variable": "pmt_amt", "type": "num", "format": "DOLLAR12.2", "length": 8, "label": "Claim Payment Amount"}
+{"record_type": "origin_sas_variable", "dataset": "SRCLIB.OCS_LINES_*", "variable": "prf_prvdr", "type": "char", "format": "$CHAR10.", "length": 10, "label": "Performing Provider Number"}
+{"record_type": "origin_sas_variable", "dataset": "SRCLIB.OCS_LINES_*", "variable": "lineitem", "type": "num", "format": "BEST12.", "length": 8, "label": "Line Item Number"}

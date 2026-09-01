@@ -1,0 +1,34 @@
+# Example config for resolve_schema.py
+#
+# Usage: uv run .claude/skills/sas-data-resolution/scripts/resolve_schema.py --config <this-file>
+#
+# Output: {output_dir}/{process_name}/input_schema_resolution.jsonl — the process folder
+# comes from the input inventory's meta record, never from this config, so one
+# process always resolves to one place.
+#
+# This example converts the ocs_claims process: the extraction inventory it reads
+# declares warehouse -> edw and ocs.non_institutional -> edwc_prd.claims_vw_prd.
+# Running it as-is reproduces references/sas_data_resolution_example.jsonl.
+
+# Required. input_schema is the input_schema.jsonl from sas-variable-extraction.
+input_schema = ".claude/skills/sas-variable-extraction/references/sas_variable_extraction_example_input_schema.jsonl"
+output_dir   = "output"
+overwrite    = true
+
+# MCP endpoint (defaults shown; omit any line to take the default). The resolver is
+# an MCP client, not a database client — it never connects to Postgres directly.
+#mcp_url       = "http://localhost:8002/mcp"  # default: http://localhost:8002/mcp
+#mcp_timeout_s = 60                           # default: 60
+#mcp_database  = "metadata_db"                # default: metadata_db
+
+# The server requires a bearer token, read from this environment variable — the same
+# one .mcp.json uses — so no secret is committed here.
+#mcp_token_env = "MCP_METADATA_DB_TOKEN"      # default: MCP_METADATA_DB_TOKEN
+
+# Two server limits are live dependencies: MCP_MAX_ROWS caps the rows a query may
+# return, MCP_STATEMENT_TIMEOUT_S caps how long it may run. A truncated result raises
+# rather than being written, since a short result would silently empty a variable's
+# origin_columns. The columns and mappings fetches are bounded by this inventory
+# rather than by the scope's width, so their truncation means the run really needs
+# those rows; another query truncating means that catalog region outgrew the cap.
+# Raise both limits server-side together.

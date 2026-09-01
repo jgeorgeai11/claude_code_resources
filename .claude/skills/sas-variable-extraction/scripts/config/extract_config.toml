@@ -1,0 +1,31 @@
+# End-to-end validation config for sas-variable-extraction.
+# Runs the extraction script against the two committed sample .xpt datasets in
+# this folder — plus a committed unit-test fixture as a kept output, so the
+# [outputs] path is exercised too. Run from the repo root:
+#
+#   uv run .claude/skills/sas-variable-extraction/scripts/extract_sas_dataset_schemas.py \
+#       --config .claude/skills/sas-variable-extraction/scripts/config/extract_config.toml
+#
+# Output: output/demo/input_schema.jsonl and output/demo/output_schema.jsonl
+
+[settings]
+process_name = "demo"
+overwrite    = true
+output_dir   = "output"
+origin_system     = "warehouse"                  # `systems` label the SAS data lives in
+dest_system       = "edw"                     # where the converted code runs; marks for conversion
+origin_data_scope = ["ocs.non_institutional"] # ltree prefixes, 1-3 segments, lowercase
+dest_data_scope   = ["edwc_prd.claims_vw_prd"]  # omit when the data source is not changing
+
+[datasets]
+"RAW.CLAIMS"  = { path = ".claude/skills/sas-variable-extraction/scripts/config/claims.xpt" }
+"RAW.MEMBERS" = { path = ".claude/skills/sas-variable-extraction/scripts/config/members.xpt", origin_data_scope = ["ocs.non_institutional.clm_line"] }  # per-dataset override
+# A dataset split across numbered files of identical shape: the `*` marks the key and
+# the path together, and the inventory records the pattern, not the member read.
+"RAW.SPLIT_LINES_*" = { path = ".claude/skills/sas-variable-extraction/scripts/unit_tests/fixtures/split_lines_*.xpt" }
+
+[outputs]
+# Kept outputs — no coordinate keys: outputs are inventoried,
+# not resolved. Points at a committed unit-test fixture so the smoke test exercises
+# the outputs path end to end.
+"PERM.CLAIMS_SUMMARY" = { path = ".claude/skills/sas-variable-extraction/scripts/unit_tests/fixtures/pharmacy_claims.xpt" }

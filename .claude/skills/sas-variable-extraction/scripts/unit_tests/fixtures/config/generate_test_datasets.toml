@@ -1,0 +1,6 @@
+# Configuration for generate_test_datasets.py
+#
+# Usage: uv run .claude/skills/sas-variable-extraction/scripts/unit_tests/fixtures/generate_test_datasets.py --config .claude/skills/sas-variable-extraction/scripts/unit_tests/fixtures/config/generate_test_datasets.toml
+
+# Required fields
+output_dir = ".claude/skills/sas-variable-extraction/scripts/unit_tests/fixtures"

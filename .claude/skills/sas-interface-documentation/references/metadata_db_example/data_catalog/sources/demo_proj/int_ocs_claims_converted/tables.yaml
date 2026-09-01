@@ -1,0 +1,9 @@
+# docs/activities/sas_conversion/ocs_claims/data_catalog/sources/demo_proj/int_ocs_claims_converted/tables.yaml
+# Loads into `tables` rows: table_id = demo_proj.int_ocs_claims_converted.<table_name>.
+# The same output as the converted code writes it, under the names the
+# conversion plan chose. Field legend: authoring_conventions.md.
+
+- table_name: bene_summary
+  description: One row per beneficiary — claim count, earliest claim from date, and total payment, rebuilt from the EDW Medicare view claim tables.
+  notes: Grain = beneficiary (mbr_sk). person_key is not carried — mbr_sk replaces it (a documented no-equivalent).
+  update_reason: null

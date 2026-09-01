@@ -1,0 +1,18 @@
+# docs/activities/sas_conversion/ocs_claims/data_catalog/sources/demo_proj/int_ocs_claims_sas/columns/identity.yaml
+# FOLDER FORM of columns.yaml: this schema's columns are split across
+# columns/ shard files instead of one columns.yaml (the two forms are
+# mutually exclusive for a given scope -- never both). The shard filename
+# is a grouping label only; a row's identity comes from its table_name
+# and column_name, exactly as in the single-file form.
+# This shard holds the key column.
+# Loads into `columns` rows: column_id = demo_proj.int_ocs_claims_sas.<table_name>.<column_name>.
+# Field legend: authoring_conventions.md.
+
+- table_name: ocs_claims_summary
+  column_name: person_key
+  data_type: num
+  is_nullable: false
+  is_primary_key: true
+  description: Warehouse beneficiary Person Key the summary is keyed on.
+  notes: null
+  update_reason: null

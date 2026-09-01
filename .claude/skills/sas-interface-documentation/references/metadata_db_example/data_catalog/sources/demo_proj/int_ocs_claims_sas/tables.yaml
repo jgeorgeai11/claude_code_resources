@@ -1,0 +1,10 @@
+# docs/activities/sas_conversion/ocs_claims/data_catalog/sources/demo_proj/int_ocs_claims_sas/tables.yaml
+# Loads into `tables` rows: table_id = demo_proj.int_ocs_claims_sas.<table_name>.
+# The kept output of the ocs_claims SAS process, documented as the SAS
+# process writes it -- not as the conversion would prefer it.
+# Field legend: authoring_conventions.md.
+
+- table_name: ocs_claims_summary
+  description: One row per beneficiary Person Key — claim count, earliest claim from date, and total payment rolled up from the OCS professional claims.
+  notes: Grain = beneficiary (person_key).
+  update_reason: null

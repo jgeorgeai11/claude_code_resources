@@ -1,0 +1,6 @@
+{"record_type": "meta", "process_name": "ocs_claims"}
+{"record_type": "origin_sas_dataset", "dataset": "PERM.OCS_CLAIMS_SUMMARY", "filepath": "data/sas/perm/ocs_claims_summary.sas7bdat"}
+{"record_type": "origin_sas_variable", "dataset": "PERM.OCS_CLAIMS_SUMMARY", "variable": "clm_cnt", "type": "num", "format": "BEST12.", "length": 8, "label": "Claim Count"}
+{"record_type": "origin_sas_variable", "dataset": "PERM.OCS_CLAIMS_SUMMARY", "variable": "first_from_dt", "type": "num", "format": "DATE9.", "length": 8, "label": "Earliest Claim From Date"}
+{"record_type": "origin_sas_variable", "dataset": "PERM.OCS_CLAIMS_SUMMARY", "variable": "person_key", "type": "num", "format": "COMMA23.", "length": 8, "label": "Beneficiary Person Key"}
+{"record_type": "origin_sas_variable", "dataset": "PERM.OCS_CLAIMS_SUMMARY", "variable": "tot_pmt_amt", "type": "num", "format": "DOLLAR12.2", "length": 8, "label": "Total Payment Amount"}

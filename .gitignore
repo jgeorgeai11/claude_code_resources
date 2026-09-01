@@ -1,0 +1,43 @@
+# Virtual environment
+.venv/
+venv/
+env/
+pyproject.toml
+uv.lock
+.python-version
+
+# Personal/local settings
+*.local.*
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+*.sw[op]
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Working directories
+input/
+output/
+code/
+docs/
+logs/
+dbt/

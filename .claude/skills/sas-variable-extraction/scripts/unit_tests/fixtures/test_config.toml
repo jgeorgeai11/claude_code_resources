@@ -1,0 +1,19 @@
+# Test configuration for extract_sas_dataset_schemas.py
+
+[settings]
+process_name = "test_process"
+overwrite    = true
+origin_system = "warehouse"
+dest_system = "edw"
+origin_data_scope  = ["fixture_ocs.general"]
+dest_data_scope  = ["fixture_edw"]
+
+[datasets]
+"RAW.MEDICAL_CLAIMS"    = { path = ".claude/skills/sas-variable-extraction/scripts/unit_tests/fixtures/medical_claims.xpt" }
+"RAW.PHARMACY_CLAIMS"   = { path = ".claude/skills/sas-variable-extraction/scripts/unit_tests/fixtures/pharmacy_claims.xpt", origin_data_scope = ["fixture_ocs.general.clm"] }
+"RAW.MEMBER_ENROLLMENT" = { path = ".claude/skills/sas-variable-extraction/scripts/unit_tests/fixtures/member_enrollment.xpt" }
+"RAW.EMPTY_DATASET"     = { path = ".claude/skills/sas-variable-extraction/scripts/unit_tests/fixtures/empty_dataset.xpt" }
+# A dataset split across numbered members of identical shape: the `*` marks both the
+# LIBNAME.DATASET key and the path, so the canonical config exercises the split path
+# parse_config and the extractor support, not only the single-file one.
+"RAW.SPLIT_LINES_*"     = { path = ".claude/skills/sas-variable-extraction/scripts/unit_tests/fixtures/split_lines_*.xpt" }
